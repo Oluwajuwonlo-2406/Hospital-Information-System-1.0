@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MHS | MediCare - Settings</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+        }
+
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 250px;
+            background: linear-gradient(135deg, #1e88e5, #0d47a1);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .logo h1 {
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .logo span {
+            font-weight: 300;
+        }
+
+        .nav-links {
+            list-style: none;
+            padding: 0 15px;
+        }
+
+        .nav-links li {
+            margin-bottom: 5px;
+        }
+
+        .nav-links a {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: background-color 0.3s;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-links i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            color: #333;
+        }
+
+        .header p {
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-info img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+            background-color: #ddd;
+        }
+
+        /* Settings Grid */
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        /* Section Styles */
+        .section {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-header {
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            color: #444;
+            margin-bottom: 10px;
+        }
+
+        .section-subtitle {
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #444;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            border-color: #1e88e5;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(30, 136, 229, 0.2);
+        }
+
+        /* Toggle Switch */
+        .toggle-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .toggle-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .toggle-item:last-child {
+            border-bottom: none;
+        }
+
+        .toggle-label {
+            font-weight: 500;
+            color: #444;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background-color: #1e88e5;
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+
+        /* Progress Bar */
+        .progress-group {
+            margin-top: 25px;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #444;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background-color: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #1e88e5, #0d47a1);
+            border-radius: 4px;
+            width: 99%;
+        }
+
+        /* System Info */
+        .system-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 500;
+            color: #444;
+        }
+
+        .info-value {
+            color: #666;
+        }
+
+        /* Button Styles */
+        .btn {
+            background-color: #1e88e5;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #1565c0;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background-color: #545b62;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        /* Version Info */
+        .version-info {
+            text-align: center;
+            color: #666;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .dashboard-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                padding: 15px;
+            }
+            
+            .settings-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <h1>MHS | <span>MediCare</span></h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="dashboard.html"><i>📊</i> Dashboard</a></li>
+                <li><a href="patients.html"><i>👥</i> Patients</a></li>
+                <li><a href="appointments.html"><i>📅</i> Appointments</a></li>
+                <li><a href="medicalrecords.html"><i>💊</i> Medical Records</a></li>
+                <li><a href="billing.html"><i>💰</i> Billing & Payments</a></li>
+                <li><a href="settings.html" class="active"><i>⚙️</i> Settings</a></li>
+                <li><a href="login.html"><i>🚪</i> Logout</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <div>
+                    <h1>Settings</h1>
+                    <p>Manage system preferences and configurations</p>
+                </div>
+                <div class="user-info">
+                    <img src="8380015.jpg" alt="User Avatar">
+                    <span>Dr. Admin</span>
+                </div>
+            </div>
+
+            <div class="settings-grid">
+                <!-- Profile Settings -->
+                <div class="section">
+                    <div class="section-header">
+                        <h2 class="section-title">Profile Settings</h2>
+                    </div>
+                    
+                    <form id="profileForm">
+                        <div class="form-group">
+                            <label for="fullName">Full Name</label>
+                            <input type="text" id="fullName" value="Dr. Admin" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" value="admin@hotmail.com" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" placeholder="Enter phone number">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="department">Department</label>
+                            <select id="department">
+                                <option value="cardiology">Cardiology</option>
+                                <option value="neurology">Neurology</option>
+                                <option value="orthopedics">Orthopedics</option>
+                                <option value="pediatrics">Pediatrics</option>
+                                <option value="general" selected>General Practice</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" class="btn">Update Profile</button>
+                            <button type="button" class="btn btn-secondary">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Notifications -->
+                <div class="section">
+                    <div class="section-header">
+                        <h2 class="section-title">Notifications</h2>
+                    </div>
+                    
+                    <div class="toggle-group">
+                        <div class="toggle-item">
+                            <span class="toggle-label">Email Notifications</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="toggle-item">
+                            <span class="toggle-label">SMS Reminders</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="toggle-item">
+                            <span class="toggle-label">Push Notifications</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="toggle-item">
+                            <span class="toggle-label">Appointment Alerts</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="toggle-item">
+                            <span class="toggle-label">Billing Notifications</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Security -->
+                <div class="section">
+                    <div class="section-header">
+                        <h2 class="section-title">Security</h2>
+                    </div>
+                    
+                    <div class="toggle-group">
+                        <div class="toggle-item">
+                            <span class="toggle-label">Two-Factor Authentication</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="toggle-item">
+                            <span class="toggle-label">Session Timeout (30 min)</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="toggle-item">
+                            <span class="toggle-label">Login Notifications</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="toggle-item">
+                            <span class="toggle-label">Auto Logout</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Change Password -->
+                <div class="section">
+                    <div class="section-header">
+                        <h2 class="section-title">Change Password</h2>
+                    </div>
+                    
+                    <form id="passwordForm">
+                        <div class="form-group">
+                            <label for="currentPassword">Current Password</label>
+                            <input type="password" id="currentPassword" placeholder="Enter current password" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="newPassword">New Password</label>
+                            <input type="password" id="newPassword" placeholder="Enter new password" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm New Password</label>
+                            <input type="password" id="confirmPassword" placeholder="Confirm new password" required>
+                        </div>
+                        
+                        <div class="progress-group">
+                            <div class="progress-label">
+                                <span>Password Strength</span>
+                                <span>Update: 99%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" class="btn">Update Password</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- System Information -->
+            <div class="section">
+                <div class="section-header">
+                    <h2 class="section-title">System Information</h2>
+                    <p class="section-subtitle">Current system status and information</p>
+                </div>
+                
+                <div class="system-info">
+                    <div class="info-item">
+                        <span class="info-label">System Status</span>
+                        <span class="info-value" style="color: #4caf50;">Operational</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Last Backup</span>
+                        <span class="info-value">2024-01-19 02:30 AM</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Storage Used</span>
+                        <span class="info-value">1.2 GB / 10 GB</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Active Users</span>
+                        <span class="info-value">24</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Server Uptime</span>
+                        <span class="info-value">99.8%</span>
+                    </div>
+                </div>
+                
+                <div class="version-info">
+                    <strong>Version 1.0.0</strong>
+                    <p style="margin-top: 5px; font-size: 14px;">© 2024 MHS MediCare. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add interactivity to the settings page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click handlers to navigation items
+            const navItems = document.querySelectorAll('.nav-links a');
+            navItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    if (this.getAttribute('href') === '#') {
+                        e.preventDefault();
+                    }
+                    
+                    // Remove active class from all items
+                    navItems.forEach(nav => nav.classList.remove('active'));
+                    // Add active class to clicked item
+                    this.classList.add('active');
+                });
+            });
+
+            // Handle profile form
+            const profileForm = document.getElementById('profileForm');
+            if (profileForm) {
+                profileForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const fullName = document.getElementById('fullName').value;
+                    const email = document.getElementById('email').value;
+                    
+                    // Basic validation
+                    if (!fullName || !email) {
+                        alert('Please fill in all required fields');
+                        return;
+                    }
+                    
+                    // In a real application, you would send this data to a server
+                    console.log('Updating profile:', { 
+                        fullName,
+                        email,
+                        phone: document.getElementById('phone').value,
+                        department: document.getElementById('department').value
+                    });
+                    
+                    // Show success message
+                    alert('Profile updated successfully!');
+                });
+            }
+
+            // Handle password form
+            const passwordForm = document.getElementById('passwordForm');
+            if (passwordForm) {
+                passwordForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const currentPassword = document.getElementById('currentPassword').value;
+                    const newPassword = document.getElementById('newPassword').value;
+                    const confirmPassword = document.getElementById('confirmPassword').value;
+                    
+                    // Basic validation
+                    if (!currentPassword || !newPassword || !confirmPassword) {
+                        alert('Please fill in all password fields');
+                        return;
+                    }
+                    
+                    if (newPassword !== confirmPassword) {
+                        alert('New passwords do not match');
+                        return;
+                    }
+                    
+                    if (newPassword.length < 8) {
+                        alert('Password must be at least 8 characters long');
+                        return;
+                    }
+                    
+                    // In a real application, you would send this data to a server
+                    console.log('Changing password');
+                    
+                    // Show success message
+                    alert('Password updated successfully!');
+                    
+                    // Reset form
+                    passwordForm.reset();
+                });
+            }
+
+            // Toggle switch functionality
+            const toggleSwitches = document.querySelectorAll('.toggle-switch input');
+            toggleSwitches.forEach(toggle => {
+                toggle.addEventListener('change', function() {
+                    const label = this.parentElement.previousElementSibling;
+                    console.log(`${label.textContent}: ${this.checked ? 'Enabled' : 'Disabled'}`);
+                });
+            });
+
+            // Add hover effects to sections
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                section.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-5px)';
+                    this.style.transition = 'transform 0.3s ease';
+                });
+                
+                section.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
